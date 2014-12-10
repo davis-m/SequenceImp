@@ -1,0 +1,7 @@
+geometry_config.txt - Contains the sequence imp geometry configuration data
+
+reap2imp_mappings.txt - Contains mappings between reaper metadata column names
+and sequence imp metadata column names
+
+fasta_fastq_config.txt - Contains variables necessary for swapping pipeline
+between fasta and fastq formats (may be limited to specific stages)

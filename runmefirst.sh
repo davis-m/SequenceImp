@@ -1,8 +1,10 @@
+#!/usr/bin/env bash
+
 ###########################################################################
 
-#This pipeline is part of the Kraken framework which aims to facilitate RNA 
+#This script is part of the Kraken framework which aims to facilitate RNA 
 #sequence analysis in a streamlined and efficient manner.
-#Copyright (C) 2011 2012 2013 EMBL - European Bioinformatics Institute 
+#Copyright (C) 2011 2012 2013 EMBL - European Bioinformatics Institute
 
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -22,3 +24,14 @@
 #kraken@ebi.ac.uk
 
 ###########################################################################
+
+echo -e "\nPerforming a system check to ensure all programmes are accessible.\n"
+echo -e "\nChecking Perl:\n"
+
+script_dir=$(dirname $0)
+
+perl --version
+
+echo -e "\nPerforming imp_commandline.pl system check:"
+
+$script_dir/bin/imp_commandline.pl --system-check

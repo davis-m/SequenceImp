@@ -1,0 +1,36 @@
+### This configuration is suitable for performing a miRNA analysis upon human sequences
+@organise
+reap2imp	NA
+geoConfig	NA
+@reaper+filter
+fastq	NA
+plotZeros	NA
+@reaper
+reapConfig	NA
+perlUnq	NA
+@filter
+low	NA
+minSize	18
+maxSize	26
+five	NA
+three	NA
+@align+features
+genome	human
+ensversion	1
+@align
+chunk	NA
+mismatches	2
+maxHits	20
+sam	FLAG
+@features
+feature	miRNA
+mirversion	1
+annot_conflict	merge
+overlap	15
+proportional	NA
+separate_loci	NA
+collapse_method	NA
+repversion	NA
+repMaxHits	NA
+repMismatches	NA
+repChunk	NA

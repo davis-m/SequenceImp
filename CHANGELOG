@@ -1,0 +1,88 @@
+12-109:
+170412: Altered paired-end length distribution plot axis to clearly delineate read lengths
+170412: Added read counts and percentages of processed reads to Bowtie mapping bar graph for small RNA analysis
+180412: Added processed read counts to small RNA filter plots
+180412: Added lane title to all QC plots
+180412: Resized Bowtie plot axes
+
+12-110:
+190412: Reformatted manual
+190412: Incorporate maximum base quality for tally FASTQ output for paired end sequencing
+
+12-118:
+200412: Allow specification of --no-unique which will not stop the pipeline from appending the process ID to the analysis directory name
+270412: Fixed bug in filtering that caused pipeline to crash while checking processed read totals
+270412: Fixed bug in presenting total accepted in filter stage of small RNA analysis
+
+12-354:
+060912: runmefirst.sh '--system-check' option corrected
+061212: Added repeat name to the title of repeat analysis plots
+061212: Clarify thread reporting to standard output and error in imp_commandline.pl print statements.
+071212: Tweaked alignment QC plots to be more intuitive.
+
+13-002:
+020113: Updated default_config files for compatibility with the latest Annotation versions.
+
+13-008:
+080113: Edited reaper configuration file for 5' sequence insert for new Reaper parameters.
+
+13-009:
+090113: Edited reaper configuration file for paired end, no barcode parameters to remove default head to tail trimming in this case where adapters aren't expected.
+
+13-028:
+230113: Corrected typos.
+280113: Manual updates.
+
+13-095:
+310113: Continued work on improving feedback provided by the pipeline.
+210213: Improved documentation.
+210213: More typos.
+040413: Change headers to miRNA expression table - to be more intuitive.
+040413: Introduced large changes to the way that miRNA counts are handled. These include:
+            The option to consider each miRNA locus individually as well as merge them based on miRNA ID.
+            The option to distribute multi-mapping reads between miRNA loci by a method that considers the distribution
+               of uniquely mapping reads. This method no longer considers alignments not associated with miRNA annotation.
+            Different methods to handle overlapping miRNA annotations from miRBase.
+040413: Update to all Default Configuration files to reflect the new options available for handling miRNA expression matrices.
+050413: Further improved documentation to explain new methods for handling miRNA expression counts in more detail.
+050413: Added references to manual and --system-check option.
+
+13-274:
+250713: Added checks to return helpful error messages.
+090913: Identified a problem with an R package inconsistently parsing command line flags between versions.
+        Altered pipeline to ensure consistent behaviour with all R versions.
+130913: Pipeline quits with non-zero exit code when threads fail.
+
+13-354:
+291113: Edited reaper default configurations to increase the stringencies on sequence searches to help prevent spurious matches.
+021213: Corrected typos and implemented some spelling variations in options.
+
+14-224:
+150714: Changes to pipeline to make it compatible with the new annotation
+        system - unfortunately this will supercede older versions of the annotation and
+        the pipeline will be incompatible with previous annotation releases due to
+        changes in annotation filenames and organisation. This will however allow the
+        user greater flexibility in the construction of annotation sets to be used with
+         the pipeline.
+
+            align step feature comparison plots adjusted to allow the pipeline to cope with annotation sets that could
+               have a varying number of classes. Therefore, two plots from the same lane will not necessarily display the same
+               annotation classes in the same order.
+               In addition, annotation classes represented by a small number of reads are collapsed to 
+               a "Remaining" annotation category.
+            repversion option added to the features section of the config file. This will allow flexibility in the selection 
+               of user defined annotation datasets for each stage of the pipeline.
+
+170714: collapse_method option added to the features section of the configuraton file. 
+        This option will allow the miRNA counts to be merged either based on miRBase ID (old method) or mature sequence.
+210714: align step plots were altered to allow the pipeline to skip plots intended to compare reads to repeat annoatation, where
+            this annotation is not available.
+
+14-246:
+010914: Defined the precision at which weights are applied to repeat coverage for repeat mapping reads. At extremely high precision (eg. 10^-7)
+            bases with no coverage were receiving low counts (eg. 5 x 10^17), using the GenomicRanges coverage() function.
+        Corrected problem that caused repeat step to crash if only overlaps of a single length were identified.            
+030914: Ensured that when comparisons are made against repeat elements, the pipeline does not crash if no alignments are identified, due to Samtools
+            truncated file error message.
+        Repeat Element length plot will include points to allow visualisation of read sets of a single length.
+

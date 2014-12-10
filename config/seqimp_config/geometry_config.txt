@@ -1,0 +1,7 @@
+Geometry	Barcodes	5p_ad	3p_ad	5p_seq_insert	3p_seq_insert	Columns	Config	Paired
+no_barcode	NO	MAYBE	YES	NO	NO	tabu,3p-ad	no_bar.config	NO
+5p_barcode	YES	MAYBE	YES	NO	NO	tabu,barcode,3p-ad,5p-si	5p_bar.config	NO
+3p_barcode	YES	MAYBE	YES	NO	NO	tabu,barcode,3p-ad,3p-si	3p_bar.config	NO
+5p_barcode_and_insert	YES	MAYBE	YES	YES	NO	tabu,barcode,5p-si,3p-ad	5p_bar_si.config	NO
+3p_barcode_and_insert	YES	MAYBE	YES	NO	YES	tabu,barcode,3p-si,3p-ad	3p_bar_si.config	NO
+pair_no_barcode	NO	YES	YES	NO	NO	tabu,3p-ad	pair_no_bar.config	YES

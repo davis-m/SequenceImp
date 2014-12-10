@@ -1,0 +1,36 @@
+### This configuration is suitable for performing a piRNA analysis upon mouse sequences
+@organise
+reap2imp	NA
+geoConfig	NA
+@reaper+filter
+fastq	NA
+plotZeros	NA
+@reaper
+reapConfig	NA
+perlUnq	NA
+@filter
+low	NA
+minSize	24
+maxSize	32
+five	NA
+three	NA
+@align+features
+genome	mouse
+ensversion	1
+@align
+chunk	NA
+mismatches	2
+maxHits	20
+sam	FLAG
+@features
+feature	repeat
+mirversion	NA
+annot_conflict	NA
+overlap	NA
+proportional	NA
+separate_loci	NA
+collapse_method	NA
+repversion	1
+repMaxHits	10
+repMismatches	3
+repChunk	NA

@@ -1,0 +1,30 @@
+Sequence Imp Readme (Part of the Kraken framework).
+
+A broader explanation of the pipeline Sequence Imp can be found in the online
+documentation (http://www.ebi.ac.uk/~matdavis/imp.html), a copy of which can be
+found in the doc/ directory. This provides a full description of the files and
+information that you will need to analyse small RNA sequencing data with the
+pipeline.
+
+In order to get started first of all you should read the "Additional software
+dependencies" section of the online manual
+(http://www.ebi.ac.uk/~matdavis/imp.html#dependencies). This will help you set
+up the pipeline and direct you to the additional tools and libraries required.
+To test your system setup once these are installed, either run the
+runmefirst.sh script or initiate imp_commandline.pl --system-setup. This should
+identify any resources you are still missing.
+
+Initially you may find it advantageous to run through some example data
+supplied with the pipeline. This can be found on the Kraken website
+(http://www.ebi.ac.uk/enright/research.html). A README file provides a worked
+example of the analysis of this data.
+
+imp_commandline.pl --help will give you a summary of the options available to a
+user with which to control the pipeline. It also provides a brief introduction
+on how to get started.
+
+This software is covered by the GPL v3 software license. For more information
+please see LICENSE.
+
+Good luck and please contact us at kraken@ebi.ac.uk with any feedback or
+problems that you might have.

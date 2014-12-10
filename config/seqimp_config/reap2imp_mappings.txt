@@ -1,0 +1,6 @@
+Reaper	Imp
+barcode	Barcode
+5p-si	5p_seq_insert
+3p-si	3p_seq_insert
+3p-ad	3p_ad
+tabu	5p_ad
