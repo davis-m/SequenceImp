@@ -403,6 +403,17 @@ sub features_help{
                                           loci sharing a miRBase mature miRNA ID 
                                           should be merged. DEFAULT: Merge loci
 
+   collapse_method <STRING>    OPTIONAL:  Specifies the method that will be used 
+                                          to merge the counts of miRNAs as 
+                                          determined by the separate_loci flag 
+                                          above. The options include 'mature_id' to 
+                                          merge based on the miRBase  mature ID 
+                                          and 'sequence' if the miRNAs counts are 
+                                          to be merged where mature miRNAs share an 
+                                          identical sequence. This option can only 
+                                          be provided if the separate_loci option 
+                                          is not used. DEFAULT: mature_id
+   
    feature repeat:
 
    ensversion     <INTEGER>    REQUIRED/NOT REQUIRED:  Ensembl version for which

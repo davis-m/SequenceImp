@@ -74,10 +74,12 @@ if (!is.null(args$proportional)){
 }
 
 # 170414 - Allow the collapse of miRNA counts based on sequence rather than ID.   
-if (!is.null(args$collapse_type)){     
-   collapse_type <- args$collapse_type
+if (!is.null(args$collapsetype)){     
+   collapse_type <- args$collapsetype
 }else{
-   stop("Require a specified criteria for collapsing/merging miRNA counts (--collapse_type=<mature_id/sequence>)")
+   if(! separate){
+      stop("Require a specified criteria for collapsing/merging miRNA counts (--collapse_type=<mature_id/sequence>)")
+   }
 }
 
 if (!is.null(args$treatOverlap)){
@@ -112,7 +114,7 @@ if(proportional){
 
 if(separate){
    write("All loci considered independently and attributed a unique ID",stderr())
-   if(length(collapse_type) > 0){
+   if(nchar(collapse_type) > 0){
       write(paste("WARNING: Ignoring specified collapse type:",collapse_type),stderr())
    }
 }else{

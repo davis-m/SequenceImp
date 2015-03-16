@@ -461,6 +461,7 @@ if ($stage eq "reaper"){
          }
 
          die "Can not specify a 'collapse_method' in the analysis config file if 'the seperate_loci' flag is used\n" if ($no_merge && $collapse_method ne "default");
+         $collapse_method = "mature_id" if $collapse_method eq "default";
          die "--collapse_method=<STRING> can only take the options 'mature_id' and 'sequence'\n" if (($collapse_method ne "mature_id") && ($collapse_method ne "sequence"));
          
          if (length($annot_conflict)==0){
@@ -1321,8 +1322,7 @@ if ($stage eq "features"){
       my $analysisDir;
       my $mapDir;
 
-      $collapse_method = "mature_id" if $collapse_method eq "default";
-      my $R_methodOption = $no_merge ? "" : "--collapse_type=$collapse_method" ;
+      my $R_methodOption = $no_merge ? "" : "--collapsetype=$collapse_method" ;
 
       my $R_mergingFlag = $no_merge ? "--nomerge=29" : "";
       my $R_propFlag = $proportional ? "--proportional=29" : "";

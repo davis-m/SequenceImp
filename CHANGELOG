@@ -59,7 +59,7 @@
 
 14-224:
 150714: Changes to pipeline to make it compatible with the new annotation
-        system - unfortunately this will supercede older versions of the annotation and
+        system - unfortunately this will supersede older versions of the annotation and
         the pipeline will be incompatible with previous annotation releases due to
         changes in annotation filenames and organisation. This will however allow the
         user greater flexibility in the construction of annotation sets to be used with
@@ -73,9 +73,9 @@
             repversion option added to the features section of the config file. This will allow flexibility in the selection 
                of user defined annotation datasets for each stage of the pipeline.
 
-170714: collapse_method option added to the features section of the configuraton file. 
+170714: collapse_method option added to the features section of the configuration file. 
         This option will allow the miRNA counts to be merged either based on miRBase ID (old method) or mature sequence.
-210714: align step plots were altered to allow the pipeline to skip plots intended to compare reads to repeat annoatation, where
+210714: align step plots were altered to allow the pipeline to skip plots intended to compare reads to repeat annotation, where
             this annotation is not available.
 
 14-246:
@@ -84,5 +84,9 @@
         Corrected problem that caused repeat step to crash if only overlaps of a single length were identified.            
 030914: Ensured that when comparisons are made against repeat elements, the pipeline does not crash if no alignments are identified, due to Samtools
             truncated file error message.
-        Repeat Element length plot will include points to allow visualisation of read sets of a single length.
+        Repeat element length plot will include points to allow visualisation of read sets of a single length.
 
+15-075:
+130315: Solve issue concerning default collapse_method not being accepted by the pipeline
+        Remove underscores from R options as these are not interpreted correctly in some R versions
+160315: Updated README.
