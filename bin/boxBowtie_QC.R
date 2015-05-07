@@ -302,7 +302,9 @@ for (sampleChoice in names(sumValues)){
    #readDistGenes <- matrix(data=0, nrow = length(classRecords[["GeneClasses"]]), ncol = ncol(readDistTable), dimnames = list("row" = classRecords[["GeneClasses"]],"col" = colnames(readDistTable)))
   
 #   if (cycle == 0){ # Removed 170714 - different class numbers for each set
-   readDistGenes <- readDistGenes[order(rowSums(readDistGenes), decreasing=TRUE),]
+   if(nrow(readDistGenes)>1){
+      readDistGenes <- readDistGenes[order(rowSums(readDistGenes), decreasing=TRUE),]
+   }
    #repeatOrder <- rownames(readDistRepeats) 
    #geneOrder <- rownames(readDistGenes)
 #   }
@@ -315,8 +317,11 @@ for (sampleChoice in names(sumValues)){
       repeatDistTable  <- readDistTable[rownames(readDistTable)%in%classRecords[["Repeats"]],,drop=FALSE]
       remaining_repeat_classes <- apply(otherDistTable[rownames(otherDistTable) %in% classRecords[["Repeats"]],],2,sum)
       readDistRepeats <- rbind(repeatDistTable,t(as.data.frame(remaining_repeat_classes))[,colnames(repeatDistTable),drop=FALSE])
-      readDistRepeats <- readDistRepeats[order(rowSums(readDistRepeats), decreasing=TRUE),] 
-
+      
+      if(nrow(readDistRepeats)>1){
+         readDistRepeats <- readDistRepeats[order(rowSums(readDistRepeats), decreasing=TRUE),] 
+      }
+      
       bowtieSummary(t(readDistRepeats), repeatCols, repeatTitle, yaxisLimit)
    }else{
       plot(NA, main=repeatTitle, cex = 0.5, xlim=c(0,1), ylim=c(0,1), axes=F, xlab="", ylab="",cex.main=0.75)

@@ -90,3 +90,7 @@
 130315: Solve issue concerning default collapse_method not being accepted by the pipeline
         Remove underscores from R options as these are not interpreted correctly in some R versions
 160315: Updated README.
+
+15-127:
+050315: Fix Bowtie alignment plots for cases where either no repeat or gene annotation classes do surpass the threshold to plot
+            as individual classes rather than as a combined set.
