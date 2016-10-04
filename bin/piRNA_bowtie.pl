@@ -163,8 +163,8 @@ foreach my $inFile (@inDirList) {     # Arrange sequential input files (clean.pr
 
    my $samExpanded = "$output/$fileBase.bowtie.unique.output.sam.gz";
    my $bamFile = "$output/$fileBase.bowtie.unique.output.bam";
-   my $bamSort = "$output/$fileBase.bowtie.unique.output.sort";
-   my $indexIn = "$output/$fileBase.bowtie.unique.output.sort.bam";
+   my $bamSort = "$output/$fileBase.bowtie.unique.output.sort.bam";
+   #my $indexIn = "$output/$fileBase.bowtie.unique.output.sort.bam";
    
    ################################################################
    ### Arrange all systems calls for sequential file processing ###
@@ -173,8 +173,8 @@ foreach my $inFile (@inDirList) {     # Arrange sequential input files (clean.pr
    my $syscall = "gzip -dcf $inFile | bowtie --time $mismatchOpt --best $maxHitsOpt --strata $chunkOpt $maxRepsOpt -S -f $repeat - | samtools view -Sh -F 4 - | gzip -c1 > $outFile";
    my $depthFieldCall = "$depthFfn $outFile $samExpanded";
    my $viewCall = "gzip -cdf $samExpanded | samtools view -bS -o $bamFile -";
-   my $sortCall = "samtools sort $bamFile $bamSort";
-   my $indexCall = "samtools index $indexIn";
+   my $sortCall = "samtools sort $bamFile -T $output/$fileBase -o $bamSort";
+   my $indexCall = "samtools index $bamSort";
 
    print STDERR "Systems calls:\n\n" if $debug;
 

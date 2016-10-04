@@ -28,6 +28,8 @@
 set -e
 
 references=false
+# Required version of samtools
+samver="1.3"
 
 function clean_up {
    if [[ $? == 0 ]]; then
@@ -98,10 +100,33 @@ if [[ $step == "complete" || $step == "reaper" || $step == "filter" || $step == 
    
    if [[ $step == "complete" || $step == "align" || $step == "features" ]]; then
       if ! which samtools > /dev/null 2>&1; then
-         echo -e "\nCould not find samtools. Please download and install samtools (http://samtools.sourceforge.net/)." 1>&2
+         echo -e "\nCould not find samtools. Please download and install samtools (v$samver+) (http://htslib.org//)." 1>&2
          false
       else
-         echo -e "\nsamtools found." 1>&2
+         # Check samtools version installed here.
+ 
+         if  ! samtools --version > /dev/null 2>&1; then
+            echo -e "\nCould not identify samtools version (samtools --version). Please use samtools v$samver+" 1>&2
+            false
+         fi
+
+         currentver=$(samtools --version | head -n1 | cut -d " " -f2)
+
+         if [[ ! $currentver =~ ^[[:digit:].]+$ ]]; then
+            echo -e "\nSamtools version parsing has failed"
+            false
+         fi
+
+         # Sorts in ascending order using version sorting
+      
+         if [[ "$(printf "$samver\n$currentver" | sort -V | head -n1)" == $samver ]]; then
+            echo -e "\nsamtools found.\nVersion: $currentver"
+         else
+            echo -e "\nNeed a more recent version of samtools (v$samver+).\nCurrent version: $currentver"
+            false
+         fi
+ 
+
          if $references; then
             echo -e "Reference:\nThe Sequence alignment/map (SAM) format and SAMtools.\nLi H.*, Handsaker B.*, Wysoker A., Fennell T., Ruan J., Homer N., Marth G., Abecasis G., Durbin R. and 1000 Genome Project Data Processing Subgroup.\nBioinformatics  (2009), 25:2078-9." 1>&2
          fi

@@ -203,13 +203,13 @@ foreach my $inFile (@inDirList) {
    if ($samFormat){
       my $samExpanded = "$outDir/$fileBase.bowtie.unique.output.sam.gz";
       my $bamFile = "$outDir/$fileBase.bowtie.unique.output.bam";
-      my $bamSort = "$outDir/$fileBase.bowtie.unique.output.sort";
-      my $indexIn = "$outDir/$fileBase.bowtie.unique.output.sort.bam";
+      my $bamSort = "$outDir/$fileBase.bowtie.unique.output.sort.bam";
+      #my $indexIn = "$outDir/$fileBase.bowtie.unique.output.sort.bam";
 
       my $depthFieldCall = "$depthField $outFile $samExpanded";
       my $viewCall = "gzip -cdf $samExpanded | samtools view -bS -o $bamFile -";
-      my $sortCall = "samtools sort $bamFile $bamSort";
-      my $indexCall = "samtools index $indexIn";
+      my $sortCall = "samtools sort $bamFile -T $outDir/$fileBase -o $bamSort";
+      my $indexCall = "samtools index -b $bamSort";
       
       print STDERR "Adding optional fields to SAM format\n"; 
       print STDERR "$depthFieldCall\n" if $debug;
@@ -225,7 +225,7 @@ foreach my $inFile (@inDirList) {
       
       print STDERR "Indexing BAM file\n";
       print STDERR "$indexCall\n" if $debug;
-      die "Failed to index $indexIn\n" unless system($indexCall)==0;
+      die "Failed to index $bamSort\n" unless system($indexCall)==0;
    }
 
    my $oclock = localtime();
