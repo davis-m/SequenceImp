@@ -94,3 +94,14 @@
 15-127:
 050315: Fix Bowtie alignment plots for cases where either no repeat or gene annotation classes do surpass the threshold to plot
             as individual classes rather than as a combined set.
+
+041016: Updated pipeline to work with the latest samtools versions. Include version check as some alterations to samtools sort are 
+not compatible with earlier samtools versions.
+
+17-053:
+220217: Edited trimming configuration to anchor -3p-prefix.
+        Fix bug in paired end read IDs. Edit the read names in paired end clean-up to ensure paired reads have matching IDs.
+        Add add_read_index.pl to add a pair index to paired end read IDs.
+        Begin implementing more streamlined testing to ease continued development (t/). Add streamlined paired end testing.
+
+
