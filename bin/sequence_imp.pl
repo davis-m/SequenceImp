@@ -51,6 +51,7 @@ my $qcRoute = "$ENV{SEQIMP_ROOT}/bin/QualityPlot.R";           # Default route f
 my $trimmitFfn = "$ENV{SEQIMP_ROOT}/bin/trimmit.pl";
 my $paired_tally_Ffn = "$ENV{SEQIMP_ROOT}/bin/paired_tally.pl";       # Default route for paired end read uniquify script
 my $tally_sstat_Ffn = "$ENV{SEQIMP_ROOT}/bin/tally_sstat_plot.R";     # Default route for paired tally sumstat plot script
+my $addIndexFfn = "$ENV{SEQIMP_ROOT}/bin/add_read_index.pl";          # Default route for script to add read name indexes
 my $tallyFfn = "tally";                                               # Default route to the tally program - note if passed to uniquify will trigger its use for uniquifying sequences in a more memory efficient fashion. If not Perl method will be used.
 my $LCcutoff = "";
 my $smallest = "";
@@ -997,7 +998,9 @@ if ($stage eq "filter"){
       die "Too many trimmed sequence files (.clean.gz) in $reapFfn2. Currently do not support multiplexed, paired end reads.\n" if ((scalar @inputsTWO) != 1);
    
       my $outputONE = "";
+      my $intermedONE = "";
       my $outputTWO = "";
+      my $intermedTWO = "";
       my $sstatONE = "";
       my $sstatTWO = "";
       my $readFormat = "";
@@ -1009,8 +1012,11 @@ if ($stage eq "filter"){
 
       if ($inputsONE[0] =~ /^$reapFfn(\S+)\.clean\.gz$/){
          if ($fastq){
+            # 170217: Swap outputONE and outputTWO for a new temporary intermediate file - this will allow the subsequent indexing of reads before the final output is produced.
+            $intermedONE = "$procDir/$1.intermed.fastq.gz";
             $outputONE = "$procDir/$1.tallied.fastq.gz";
          }else{
+            $intermedONE = "$procDir/$1.intermed.fasta.gz";
             $outputONE = "$procDir/$1.tallied.fasta.gz";
          }
          $sstatONE = "$procDir/$1.proc.sumstat";
@@ -1025,8 +1031,10 @@ if ($stage eq "filter"){
    
       if ($inputsTWO[0] =~ /^$reapFfn2(\S+)\.clean\.gz$/){
          if ($fastq){
+            $intermedTWO = "$procDir2/$1.intermed.fastq.gz";
             $outputTWO = "$procDir2/$1.tallied.fastq.gz";
          }else{
+            $intermedTWO = "$procDir2/$1.intermed.fasta.gz";
             $outputTWO = "$procDir2/$1.tallied.fasta.gz";
          }
          $sstatTWO = "$procDir2/$1.proc.sumstat";
@@ -1049,24 +1057,101 @@ if ($stage eq "filter"){
       ##################################### Will need to incorporate maximum and minimum lengths, trinucleotide scores and 5' trimming.
       # Also need to organise sumstat output and links between paired directories.
    
-      my $ptally_call = "$paired_tally_Ffn --tally=$tallyFfn $readFormat $readOutFormat --inONE=$inputsONE[0] --inTWO=$inputsTWO[0] --outONE=$outputONE --outTWO=$outputTWO $readFormat $readOutFormat --stat=$sstatONE $pairfilterMin $pairfilterMax $pairfilterLC $pairfilterFive $ptally_fastq_Opt";
+      my $ptally_call = "$paired_tally_Ffn --tally=$tallyFfn $readFormat $readOutFormat --inONE=$inputsONE[0] --inTWO=$inputsTWO[0] --outONE=$intermedONE --outTWO=$intermedTWO $readFormat $readOutFormat --stat=$sstatONE $pairfilterMin $pairfilterMax $pairfilterLC $pairfilterFive $ptally_fastq_Opt";
    
       print $ptally_call."\n" if $debug;
       die "Paired end Tally has failed: $ptally_call\n" if system($ptally_call);
   
-      die "The first Tally output file appears to be missing! Please check." if (! -s $outputONE);
-      die "The second Tally output file appears to be missing! Please check." if (! -s $outputTWO);
+      die "The first Tally output file appears to be missing! Please check." if (! -s $intermedONE);
+      die "The second Tally output file appears to be missing! Please check." if (! -s $intermedTWO);
       die "The Tally sstat output file appears to be missing! Please check." if (! -s $sstatONE);
 
       print STDERR "\nCopying sumstat summary file to both of the paired sample directories\n";
       die "Cannot copy the sumstat files for processed paired reads between sample directories: $!\n" if system ("cp $sstatONE $sstatTWO");
+
+      ############################################
+      ### Add a /1 or /2 index to paired files ###
+      ############################################
+
+      print STDERR "\nAdding indexes (/1 and /2) to paired reads\n";
+      print STDERR "outputONE:$outputONE\n\noutputTWO:$outputTWO\n\n" if $debug;
+      print STDERR "baseDir: $baseDir\nbaseDir2: $baseDir2\n" if $debug;
+
+      # 160217:
+      # At this stage insert the command to add the read index (/1 or /2) to the read IDs within each file 
+      # $reformat_ids_output{$outputONE} = 
+      # Index to be appended can be derived from the sample ID of each paired sample
+      # $baseDir and $baseDir2 will contain the indexes. Order should not be assumed.
+      # $procDir corresponds to $baseDir. $procDir2 corresponds to $baseDir2. So $outputONE is paired to $baseDir and $outputTWO corresponds with $baseDir2.
+      # $formatChoice defines fasta or fastq.
+      # Need to define the output file names for the renamed FASTQ files
+      # Call to add_read_index.pl rename reads to meet paired convention 
+
+      # baseDir and baseDir2 specified by the imp_commandline script - pairing happens upstream.
+      # Is pairing random or ordered?
+      # How is _1 and _2 specified. Is this ordered at the organise step and then random?
+      # _1 and _2 is specified by the order of the files in the description file, but seperated to own lines in
+      # metatable for trimming with _1 and _2 appended. Paired by pair column (see pairify).
+      # Although files are paired, metatable is a hash, so order when passed to this script is not strictly controlled.
+      # However, baseDirs will have _1 and _2 suffix recording file order in description file.
+
+      # my $reapFfn = "$baseDir/$reapData";
+      # $inputsONE[0]
+      # $procDir
+      # $baseNameONE
+      # $reformat_ids_output{$outputONE} = 
+     
+      # $reapFfn2 = "$baseDir2/$reapData"
+      # $inputsTWO[0]
+      # $procDir2
+      # $baseNameTWO
+      # $reformat_ids_output{$outputTWO} = 
+
+      # Retrieve the index from the corresponding baseDir
+      
+      sub retrieve_file_index {
+         my $base_directory_name = shift;
+         my $index_found = 0;
+         
+         if($base_directory_name =~ /_(\d+)[\/]*$/){
+            $index_found = $1;
+         }else{
+            die "Unable to retrieve the file index from the base directory name\n";
+         }
+         
+         die "Index must be 1 or 2\n" if (($index_found != 1)&&($index_found != 2));
+         return($index_found);
+      } 
+    
+      my $index_fastq_format = $fastq ? "fastq" : "fasta" ;
+
+      # Pass the index, tallied file, output file and format to the add_read_index.pl script
+      # add_read_index.pl --reads= --format= --index= --out=
+      
+      # First file
+      my $first_index = &retrieve_file_index($baseDir);
+      my $first_index_call = "$addIndexFfn --reads=$intermedONE --format=$index_fastq_format --index=$first_index --out=$outputONE";
+
+      # Second file
+      my $second_index = &retrieve_file_index($baseDir2);
+      my $second_index_call = "$addIndexFfn --reads=$intermedTWO --format=$index_fastq_format --index=$second_index --out=$outputTWO";
+      
+      print STDERR "\nIndexing calls:\n$first_index_call\n$second_index_call\n" if $debug;
+     
+      die "Could not add the indexes to the first tallied file ($first_index_call)\n" if system($first_index_call);
+      die "Could not add the indexes to the second tallied file ($second_index_call)\n" if system($second_index_call);
+
+      die "The first reindexed tally file seems to be missing or empty. Please check ($outputONE).\n" if (! (-s $outputONE));
+      die "The second reindexed tally file seems to be missing or empty. Please check ($outputTWO).\n" if (! (-s $outputTWO));
+
+      # QC plot summarising the repairing of files
 
       my $PairedTQC_Call = "R --vanilla --slave --args --output=$qcPlotONE --left=$baseNameONE --right=$baseNameTWO --input=$sstatONE < $tally_sstat_Ffn";
       die "Not able to plot Tally sstat file: $PairedTQC_Call\n" if system($PairedTQC_Call);
       
       die "Cannot copy the sumstat QC plot files for processed paired reads between sample directories: $!\n" if system ("cp $qcPlotONE $qcPlotTWO");
 
-      print STDERR "\nCOMPLETED: The paired sequence files have been filtered and collapsed to unique reads in parallel.\n";
+      print STDERR "\n### COMPLETED: The paired sequence files have been filtered and collapsed to unique reads in parallel. ###\n\n";
 
       exit(0);
    

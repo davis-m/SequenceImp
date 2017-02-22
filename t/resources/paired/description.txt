@@ -1,0 +1,3 @@
+Name	File	Geometry	Barcodes	5p_ad	3p_ad	5p_seq_insert	3p_seq_insert
+paired_end_AC	file1.tagged.fastq.gz,file2.tagged.fastq.gz	pair_no_barcode	-	TACACTCTTTCCCTACACGACGCTCTTCCGATCT	AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC	-	-
+paired_end_GT	file3.tagged.fastq.gz,file4.tagged.fastq.gz	pair_no_barcode	-	TACACTCTTTCCCTACACGACGCTCTTCCGATCT	AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC	-	-

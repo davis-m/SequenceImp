@@ -1,0 +1,36 @@
+### This configuration s suitable for preparing paired end sequence files. 
+@organise
+reap2imp	NA
+geoConfig	NA
+@reaper+filter
+fastq	NA
+plotZeros	NA
+@reaper
+reapConfig	NA
+perlUnq	NA
+@filter
+low	NA
+minSize	30
+maxSize	NA
+five	NA
+three	NA
+@align+features
+genome	NA
+ensversion	NA
+@align
+chunk	NA
+mismatches	NA
+maxHits	NA
+sam	FLAG
+@features
+feature	NA
+mirversion	NA
+annot_conflict	NA
+overlap	NA
+proportional	NA
+seperate_loci	NA
+collapse_method	NA
+repversion	NA
+repMaxHits	NA
+repMismatches	NA
+repChunk	NA
