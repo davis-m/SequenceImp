@@ -264,7 +264,7 @@ for (proportionalise in names(sumValues)){
    sumValues[[proportionalise]] <- sumValues[[proportionalise]]/tableTotal
    whichothers <- (apply(sumValues[[proportionalise]],1,sum)<0.01) # Added 170714 - Number of classes no longer known. Limit plot.
    Other_annotation[[proportionalise]] <- sumValues[[proportionalise]][whichothers,]
-   sumValues[[proportionalise]]  <- sumValues[[proportionalise]][! whichothers,] 
+   sumValues[[proportionalise]]  <- sumValues[[proportionalise]][! whichothers,, drop=FALSE] 
 }
 
 #cycle <- 0
