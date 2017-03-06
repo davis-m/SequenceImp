@@ -104,4 +104,7 @@ not compatible with earlier samtools versions.
         Add add_read_index.pl to add a pair index to paired end read IDs.
         Begin implementing more streamlined testing to ease continued development (t/). Add streamlined paired end testing.
 
+17-055:
+220217: Incorporate changes from tleonardi to fix bug that causes a crash when the vast majority of reads align to a single Ensembl category (issue #1).
+
 
