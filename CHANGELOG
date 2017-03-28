@@ -107,4 +107,5 @@ not compatible with earlier samtools versions.
 17-055:
 220217: Incorporate changes from tleonardi to fix bug that causes a crash when the vast majority of reads align to a single Ensembl category (issue #1).
 
-
+17-087:
+280217: Update to the documentation.
