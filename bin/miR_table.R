@@ -154,7 +154,7 @@ if(any(duplicated(values(miRs)$uniqueID))){
 
 knownOverlaps <- c()
 
-miROverlaps <- findOverlaps(miRs, ignoreSelf=TRUE)
+miROverlaps <- findOverlaps(miRs, drop.self=TRUE)
 
 overlappingMiRs <- miRs[unique(queryHits(miROverlaps))]
 
