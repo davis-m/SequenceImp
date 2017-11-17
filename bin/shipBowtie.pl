@@ -56,6 +56,20 @@ my $depthField  = "";
 my @inDirList ;
 my $debug = 0;
 
+###################
+### Subroutines ###
+###################
+
+# System call that allows errors to be passed beyond pipes.
+sub pipesystem {
+   my $cline = shift;
+   my $retval = system("bash", "-c", qq{set -o pipefail; $cline});
+   if ($retval) {
+      print STDERR "Error while executing [$cline]\n";
+   }
+   return $retval;
+}
+
 
 ##############################
 ### COLLECTING OPTIONS #######
@@ -189,7 +203,7 @@ foreach my $inFile (@inDirList) {
    
    print STDERR "###########\n$syscall\n###########\n";
    
-   my $sysreport = system($syscall);
+   my $sysreport = pipesystem($syscall);
    # print "Return value:$sysreport\n";
 
    die "syscall hasn't worked: $syscall\n" unless $sysreport==0;
@@ -217,7 +231,7 @@ foreach my $inFile (@inDirList) {
       
       print STDERR "Converting SAM to BAM format\n";
       print STDERR "$viewCall\n" if $debug;
-      die "Failed to convert $samExpanded to bam format\n" unless system($viewCall)==0;
+      die "Failed to convert $samExpanded to bam format\n" unless pipesystem($viewCall)==0;
       
       print STDERR "Sorting BAM file\n";
       print STDERR "$sortCall\n" if $debug;

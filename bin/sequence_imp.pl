@@ -323,6 +323,21 @@ exit(0)
 
 help() if $help;
 
+###################
+### Subroutines ###
+###################
+
+# System call that allows errors to be passed beyond pipes.
+sub pipesystem {
+   my $cline = shift;
+   my $retval = system("bash", "-c", qq{set -o pipefail; $cline});
+   if ($retval) {
+      print STDERR "Error while executing [$cline]\n";
+   }
+   return $retval;
+}
+
+
 #####################
 ### SANITY CHECKS ###
 #####################
@@ -1545,7 +1560,7 @@ if ($stage eq "features"){
 
          # Report only the first hit for each read. Only need to know if it maps somewhere for read count to be incorporated into the total
          my $normCall = "gzip -dcf $newInput | bowtie --time $repMismatchOpt $repChunkOpt --suppress 2,3,4,5,6,7,8 -f $bowRef - | gzip -c1 > $normOut";
-         die "Genomic Bowtie hasn't worked\n" unless system($normCall)==0;
+         die "Genomic Bowtie hasn't worked\n" unless pipesystem($normCall)==0;
          print "$normCall\n" if $debug;
 
          # Open the mapped read file and count the totals

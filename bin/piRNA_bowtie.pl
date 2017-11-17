@@ -52,6 +52,21 @@ my $maxRepsOpt;
 my $chunkOpt;
 my $mismatchOpt;
 
+###################
+### Subroutines ###
+###################
+
+# System call that allows errors to be passed beyond pipes.
+sub pipesystem {
+   my $cline = shift;
+   my $retval = system("bash", "-c", qq{set -o pipefail; $cline});
+   if ($retval) {
+      print STDERR "Error while executing [$cline]\n";
+   }
+   return $retval;
+}
+
+
 #######################
 ### Collect Options ###
 #######################
@@ -186,7 +201,7 @@ foreach my $inFile (@inDirList) {     # Arrange sequential input files (clean.pr
 
    print STDERR "\nSending Bowtie request\n";
    print STDERR "###########\n$syscall\n###########\n";
-   die "Bowtie hasn't worked: $syscall\n" unless system($syscall)==0;
+   die "Bowtie hasn't worked: $syscall\n" unless (pipesystem($syscall)==0);
    print STDERR "Bowtie completed\n";
   
    open (BOWRES, "gzip -cd $outFile |") || die "Could not open the Bowtie SAM file: $outFile\n";
@@ -214,7 +229,7 @@ foreach my $inFile (@inDirList) {     # Arrange sequential input files (clean.pr
       print STDERR "Depth fields added to files\n";
       
       print STDERR "\nConverting SAM to BAM format\n";
-      die "Samtools 'view' (Bam conversion) hasn't worked\n" unless system($viewCall)==0;
+      die "Samtools 'view' (Bam conversion) hasn't worked\n" unless (pipesystem($viewCall)==0);
       print STDERR "Files converted to BAM format\n";
 
       print STDERR "\nSorting BAM file\n";

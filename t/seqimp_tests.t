@@ -54,6 +54,7 @@ my $TEST_MISC =  File::Spec->catfile($TEST_DIR,"misc");
 # Add seqimp_annot bin to PATH
 $ENV{PATH} = abs_path(File::Spec->catfile($SEQIMP_ROOT,"bin")).":".$ENV{PATH};
 
+
 #print STDERR "$SEQIMP_ROOT\n$RESOURCES_PATH\n$TEST_DATA_PATH\n$TEST_DIR\n$TEST_RUN\n$TEST_MISC\n";
 
 # Prepare test directories
