@@ -109,3 +109,5 @@ not compatible with earlier samtools versions.
 
 17-087:
 280217: Update to the documentation.
+
+230418: Fix small bug and warning in table reading functions. Does not appear to affect pipeline.

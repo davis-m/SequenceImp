@@ -1022,8 +1022,9 @@ sub readtable {
    $top = <TABLE>;
    chomp $top;
    @top = split "\t", $top, -1;
-   $fileCols{$fileId++} = $_++ for @top;
- 
+   $fileCols{$fileId++} = $_ for @top;
+   #print Dumper \%fileCols;
+
    while (<TABLE>) {
       chomp;
       my @stuff = split "\t", $_,-1;
@@ -1039,6 +1040,8 @@ sub readtable {
    }
    close(TABLE);
    print STDERR "Reading of table complete\n";
+   
+   #print Dumper \%parsedTable;
    return(\%parsedTable);
 }
 

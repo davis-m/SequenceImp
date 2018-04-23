@@ -548,7 +548,7 @@ sub readformat {
    $header = <TABLE>;
    chomp $header;
    @header = split "\t", $header, -1;
-   $columns{$columnNo++} = $_++ for @header;
+   $columns{$columnNo++} = $_ for @header;
    
    while (<TABLE>) {
       chomp;
@@ -565,6 +565,7 @@ sub readformat {
    }
    close(TABLE);
    print STDERR "Reading of table complete\n";
+   
    return(\%loadedTable);
 }
 
@@ -600,8 +601,9 @@ if ($stage eq "reaper"){
    $geoConfigLine = <GEOM>;
    chomp $geoConfigLine;
    @headerChoices = split "\t", $geoConfigLine;
-   $geoCols{$geoId++} = $_++ for @headerChoices;
+   $geoCols{$geoId++} = $_ for @headerChoices;
    
+
    while (<GEOM>) {
       chomp;
       my @geoLineChew = split "\t", $_,-1;
